@@ -5,6 +5,7 @@
 #include "common.h"
 #include <stdbool.h>
 #include "constants.h"
+#include "keystroke.h"
 
 struct State
 {
@@ -17,6 +18,7 @@ struct State
 struct Session
 {
     int curr_level;
+    int start_menu_selected_item;
 };
 
 struct SDL_util

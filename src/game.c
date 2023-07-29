@@ -14,11 +14,14 @@ void initialize_game(struct Game *game, SDL_Window *window, SDL_Renderer *render
 
     // SESSION
     game->session.curr_level = 1;
+    game->session.start_menu_selected_item = 0;
 
     // SDL_UTIL
     game->sdl_util.window = window;
     game->sdl_util.renderer = renderer;
     game->ux_util.menu_highlight_blink = 10;
+
+    SDL_SetRenderDrawColor(game->sdl_util.renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 }
 
 void load_textures_handler(struct Game *game)
@@ -41,8 +44,40 @@ void load_textures_handler(struct Game *game)
     game->state.level_loaded = 1;
 }
 
+static void draw_start_screen_menu(struct Game *game)
+{
+    draw_text(game, TITLE_COLOR, "PLAY", (struct Coords){.x = 65, .y = 80}, false, false, false);
+    draw_text(game, TITLE_COLOR, "OPTIONS", (struct Coords){.x = 65, .y = 80 + 1 * MENU_ITM_HRZTNL_SPCING}, false, false, false);
+    draw_text(game, TITLE_COLOR, "QUIT", (struct Coords){.x = 65, .y = 80 + 2 * MENU_ITM_HRZTNL_SPCING}, false, false, false);
+}
+
+static void draw_menu_triangle(struct Game *game)
+{
+    int size = 14;
+    int x = 50;
+    int y = 90 + game->session.start_menu_selected_item * MENU_ITM_HRZTNL_SPCING;
+
+    SDL_Point points[4] = {
+        {x, y},
+        {x, y + size},
+        {x + size / 2, y + size / 2},
+        {x, y}};
+
+    SDL_SetRenderDrawColor(game->sdl_util.renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderDrawLines(game->sdl_util.renderer, points, 4);
+
+    SDL_SetRenderDrawColor(game->sdl_util.renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+}
+
 void start_screen_tick(struct Game *game)
 {
+
+    SDL_Color color = {156, 14, 38, 255};
+
+    draw_text(game, color, "JUMPALOT", (struct Coords){.x = 0, .y = 0}, false, true, true);
+
+    draw_start_screen_menu(game);
+    draw_menu_triangle(game);
 }
 
 void gameplay_tick(struct Game *game)
@@ -87,12 +122,6 @@ void draw_text(struct Game *game,
 
 void tick(struct Game *game)
 {
-    SDL_RenderClear(game->sdl_util.renderer);
-    SDL_Color color = {156, 14, 38, 255};
-
-    draw_text(game, color, "Minigolf THING", (struct Coords){.x = 0, .y = 0}, false, true, true);
-
-    draw_text(game, color, "PLAY", (struct Coords){.x = 30, .y = 80}, false, false, false);
 
     if (game->state.level_loaded == 0 && game->state.game == 0)
     {
@@ -110,7 +139,6 @@ void tick(struct Game *game)
     {
         finish_screen_tick(game);
     }
-    SDL_RenderPresent(game->sdl_util.renderer);
 }
 
 void event_loop_handler(SDL_bool *done, struct Game *game)
@@ -128,16 +156,16 @@ void event_loop_handler(SDL_bool *done, struct Game *game)
             switch (event.key.keysym.sym)
             {
             case SDLK_UP:
+                handle_arrow_key(game, SDLK_UP);
                 break;
             case SDLK_DOWN:
+                handle_arrow_key(game, SDLK_DOWN);
                 break;
             case SDLK_LEFT:
+                handle_arrow_key(game, SDLK_LEFT);
                 break;
             case SDLK_RIGHT:
-                break;
-            case SDLK_a:
-                break;
-            case SDLK_b:
+                handle_arrow_key(game, SDLK_RIGHT);
                 break;
             }
         }
@@ -146,7 +174,7 @@ void event_loop_handler(SDL_bool *done, struct Game *game)
 
 void game_loop(struct Game *game)
 {
-    SDL_bool *done = SDL_FALSE;
+    SDL_bool done = SDL_FALSE; // declare done as SDL_bool not pointer
     Uint32 frameStart;
 
     int frameTime;
@@ -155,9 +183,11 @@ void game_loop(struct Game *game)
     while (!done)
     {
 
+        SDL_RenderClear(game->sdl_util.renderer);
+
         frameStart = SDL_GetTicks();
 
-        event_loop_handler(done, game);
+        event_loop_handler(&done, game);
         tick(game);
 
         frameTime = SDL_GetTicks() - frameStart;
@@ -166,5 +196,7 @@ void game_loop(struct Game *game)
         {
             SDL_Delay(frameDelay - frameTime);
         }
+
+        SDL_RenderPresent(game->sdl_util.renderer);
     }
 }
