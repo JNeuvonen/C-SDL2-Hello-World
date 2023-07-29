@@ -33,8 +33,6 @@ SDL_Renderer *init_renderer(SDL_Window *window)
         SDL_Log("Failed to create renderer: %s", SDL_GetError());
     }
 
-    SDL_RenderPresent(renderer);
-
     return renderer;
 }
 void init_TTF(struct Game *game)
