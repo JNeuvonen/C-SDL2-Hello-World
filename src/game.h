@@ -7,18 +7,29 @@
 #include "constants.h"
 #include "keystroke.h"
 
+enum StartMenuState
+{
+    INIT,
+    OPTIONS,
+};
+
+enum Mode
+{
+    START_SCREEN,
+    GAME,
+    FINISH_SCREEN,
+};
+
 struct State
 {
     bool level_loaded;
-    bool start;
-    bool game;
-    bool finish;
 };
 
 struct Session
 {
     int curr_level;
     int start_menu_selected_item;
+    enum StartMenuState menu_state;
 };
 
 struct SDL_util
@@ -47,6 +58,7 @@ struct Game
     struct SDL_util sdl_util;
     struct Level1Assets level_1_assets;
     struct UX_util ux_util;
+    enum Mode mode;
 };
 
 void initialize_game(struct Game *game, struct SDL_Window *window, struct SDL_Renderer *renderer);

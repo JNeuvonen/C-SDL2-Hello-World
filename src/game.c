@@ -7,10 +7,8 @@
 void initialize_game(struct Game *game, SDL_Window *window, SDL_Renderer *renderer)
 {
     // STATE
-    game->state.level_loaded = 0;
-    game->state.start = 1;
-    game->state.game = 0;
-    game->state.finish = 0;
+    game->state.level_loaded = false;
+    game->mode = START_SCREEN;
 
     // SESSION
     game->session.curr_level = 1;
@@ -106,15 +104,8 @@ void draw_text(struct Game *game,
 
     SDL_Rect dstrect = {coords.x, coords.y, text_width, text_height};
 
-    if (cntr_vertcl)
-    {
-        dstrect.y = WINDOW_H_HALF - text_height / 2;
-    }
-
-    if (cntr_hrzntl)
-    {
-        dstrect.x = WINDOW_W_HALF - text_width / 2;
-    }
+    dstrect.y = cntr_vertcl ? WINDOW_H_HALF - text_height / 2 : coords.y;
+    dstrect.x = cntr_hrzntl ? WINDOW_W_HALF - text_width / 2 : coords.x;
 
     SDL_RenderCopy(renderer, texture, NULL, &dstrect);
     SDL_DestroyTexture(texture);
@@ -123,22 +114,14 @@ void draw_text(struct Game *game,
 void tick(struct Game *game)
 {
 
-    if (game->state.level_loaded == 0 && game->state.game == 0)
-    {
+    if (game->state.level_loaded == false && game->mode == GAME)
         load_textures_handler(game);
-    }
-    else if (game->state.start == 1)
-    {
+    else if (game->mode == START_SCREEN)
         start_screen_tick(game);
-    }
-    else if (game->state.game == 1)
-    {
+    else if (game->mode == GAME)
         gameplay_tick(game);
-    }
-    else if (game->state.finish == 1)
-    {
+    else if (game->mode == FINISH_SCREEN)
         finish_screen_tick(game);
-    }
 }
 
 void event_loop_handler(SDL_bool *done, struct Game *game)
@@ -156,16 +139,15 @@ void event_loop_handler(SDL_bool *done, struct Game *game)
             switch (event.key.keysym.sym)
             {
             case SDLK_UP:
-                handle_arrow_key(game, SDLK_UP);
-                break;
             case SDLK_DOWN:
-                handle_arrow_key(game, SDLK_DOWN);
-                break;
             case SDLK_LEFT:
-                handle_arrow_key(game, SDLK_LEFT);
-                break;
             case SDLK_RIGHT:
-                handle_arrow_key(game, SDLK_RIGHT);
+                handle_arrow_key(game, event.key.keysym.sym);
+                break;
+
+            case SDLK_RETURN:
+            case SDLK_KP_ENTER:
+                handle_enter_key(game);
                 break;
             }
         }
@@ -174,7 +156,7 @@ void event_loop_handler(SDL_bool *done, struct Game *game)
 
 void game_loop(struct Game *game)
 {
-    SDL_bool done = SDL_FALSE; // declare done as SDL_bool not pointer
+    SDL_bool done = SDL_FALSE;
     Uint32 frameStart;
 
     int frameTime;
@@ -182,20 +164,15 @@ void game_loop(struct Game *game)
 
     while (!done)
     {
-
         SDL_RenderClear(game->sdl_util.renderer);
-
-        frameStart = SDL_GetTicks();
+        Uint32 frameStart = SDL_GetTicks();
 
         event_loop_handler(&done, game);
         tick(game);
 
-        frameTime = SDL_GetTicks() - frameStart;
-
+        int frameTime = SDL_GetTicks() - frameStart;
         if (frameDelay > frameTime)
-        {
             SDL_Delay(frameDelay - frameTime);
-        }
 
         SDL_RenderPresent(game->sdl_util.renderer);
     }

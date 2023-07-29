@@ -16,6 +16,13 @@ static handle_start_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
     }
 }
 
+static handle_start_screen_enter_key(struct Game *game)
+{
+    if (game->session.start_menu_selected_item == 0)
+    {
+    }
+}
+
 static handle_game_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
 {
 }
@@ -24,22 +31,25 @@ static handle_finish_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
 {
 }
 
+void handle_enter_key(struct Game *game)
+{
+    if (game->mode == START_SCREEN)
+        handle_start_screen_enter_key(game);
+    else if (game->mode == GAME)
+        handle_start_screen_enter_key(game);
+    else if (game->mode == FINISH_SCREEN)
+        handle_start_screen_enter_key(game);
+}
+
 void handle_arrow_key(struct Game *game, SDL_KeyCode keycode)
 {
 
-    if (game->state.start)
-    {
+    if (game->mode == START_SCREEN)
         handle_start_screen_arrow_key(game, keycode);
-    }
 
-    else if (game->state.game)
-    {
+    else if (game->mode == GAME)
         handle_game_screen_arrow_key(game, keycode);
-    }
 
-    else if (game->state.finish)
-    {
-
+    else if (game->mode == FINISH_SCREEN)
         handle_finish_screen_arrow_key(game, keycode);
-    }
 }
