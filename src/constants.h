@@ -1,0 +1,10 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+
+#define WINDOW_W_HALF (WINDOW_WIDTH / 2)
+#define WINDOW_H_HALF (WINDOW_HEIGHT / 2)
+
+#endif
