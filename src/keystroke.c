@@ -20,6 +20,7 @@ static handle_start_screen_enter_key(struct Game *game)
 {
     if (game->session.start_menu_selected_item == 0)
     {
+        game->mode = GAME;
     }
 }
 

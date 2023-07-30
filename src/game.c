@@ -116,10 +116,13 @@ void tick(struct Game *game)
 
     if (game->state.level_loaded == false && game->mode == GAME)
         load_textures_handler(game);
-    else if (game->mode == START_SCREEN)
+
+    if (game->mode == START_SCREEN)
         start_screen_tick(game);
     else if (game->mode == GAME)
+    {
         gameplay_tick(game);
+    }
     else if (game->mode == FINISH_SCREEN)
         finish_screen_tick(game);
 }
