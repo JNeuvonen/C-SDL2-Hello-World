@@ -7,6 +7,8 @@
 #include "constants.h"
 #include "keystroke.h"
 
+#define TILE_SIZE 32
+
 enum StartMenuState
 {
     INIT,
@@ -47,8 +49,9 @@ struct UX_util
 
 struct Level1Assets
 {
-    SDL_Texture *felt;
-    SDL_Texture *ball;
+    SDL_Texture *surface;
+    SDL_Texture *test;
+    int floor_tiles[100][38];
 };
 
 struct Game

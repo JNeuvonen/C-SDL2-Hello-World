@@ -14,9 +14,9 @@ int load_texture(SDL_Renderer *renderer, const char *filename, SDL_Texture **out
 
 int load_first_level(struct Game *game)
 {
-    if (!load_texture(game->sdl_util.renderer, "assets/stonewall_grayscale.png", &(game->level_1_assets.ball)))
+    if (!load_texture(game->sdl_util.renderer, "assets/stonewall_grayscale.png", &(game->level_1_assets.surface)))
         return 0;
-    if (!load_texture(game->sdl_util.renderer, "assets/stonewall_grayscale.png", &(game->level_1_assets.felt)))
+    if (!load_texture(game->sdl_util.renderer, "assets/stonewall_grayscale.png", &(game->level_1_assets.test)))
         return 0;
 
     return 1;

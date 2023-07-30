@@ -80,6 +80,17 @@ void start_screen_tick(struct Game *game)
 
 void gameplay_tick(struct Game *game)
 {
+
+    for (int i = 0; i < 100; i++)
+    {
+
+        SDL_Rect texture_rect;
+        texture_rect.x = i * TILE_SIZE;
+        texture_rect.y = WINDOW_HEIGHT - TILE_SIZE / 2;
+        texture_rect.w = TILE_SIZE;
+        texture_rect.h = TILE_SIZE;
+        SDL_RenderCopy(game->sdl_util.renderer, game->level_1_assets.surface, NULL, &texture_rect);
+    }
 }
 
 void finish_screen_tick(struct Game *game)
