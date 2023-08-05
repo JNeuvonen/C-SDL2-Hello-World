@@ -7,7 +7,7 @@
 #include "constants.h"
 #include "keystroke.h"
 
-#define TILE_SIZE 32
+#define TILE_SIZE 16
 
 enum StartMenuState
 {
@@ -32,6 +32,7 @@ struct Session
     int curr_level;
     int start_menu_selected_item;
     enum StartMenuState menu_state;
+    struct TileRect *tiles;
 };
 
 struct SDL_util
@@ -51,7 +52,6 @@ struct Level1Assets
 {
     SDL_Texture *surface;
     SDL_Texture *test;
-    int floor_tiles[100][38];
 };
 
 struct Game

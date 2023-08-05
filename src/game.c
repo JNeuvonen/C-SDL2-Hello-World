@@ -1,4 +1,3 @@
-#include "game.h"
 #include "levels.h"
 #include <stdio.h>
 #include "constants.h"
@@ -72,24 +71,54 @@ void start_screen_tick(struct Game *game)
 
     SDL_Color color = {156, 14, 38, 255};
 
-    draw_text(game, color, "JUMPALOT", (struct Coords){.x = 0, .y = 0}, false, true, true);
+    draw_text(game, color, "Shitty Pacman Clone", (struct Coords){.x = 0, .y = 0}, false, true, true);
 
     draw_start_screen_menu(game);
     draw_menu_triangle(game);
 }
 
-void gameplay_tick(struct Game *game)
+static SDL_Rect getTile(int x, int y)
+{
+    SDL_Rect texture_rect;
+    texture_rect.x = x;
+    texture_rect.y = y;
+    texture_rect.w = TILE_SIZE;
+    texture_rect.h = TILE_SIZE;
+    return texture_rect;
+}
+
+static void fillRectTiles(struct Game *game, struct TileRect tileRect, struct Coords startP)
 {
 
-    for (int i = 0; i < 100; i++)
+    if (tileRect.horizontal)
     {
 
-        SDL_Rect texture_rect;
-        texture_rect.x = i * TILE_SIZE;
-        texture_rect.y = WINDOW_HEIGHT - TILE_SIZE / 2;
-        texture_rect.w = TILE_SIZE;
-        texture_rect.h = TILE_SIZE;
-        SDL_RenderCopy(game->sdl_util.renderer, game->level_1_assets.surface, NULL, &texture_rect);
+        int n = tileRect.width / TILE_SIZE;
+        for (int i = 0; i < n; i++)
+        {
+            SDL_Rect tile = getTile(startP.x + i * TILE_SIZE, startP.y);
+            SDL_RenderCopy(game->sdl_util.renderer, game->level_1_assets.surface, NULL, &tile);
+        }
+    }
+    else
+    {
+        int n = tileRect.height / TILE_SIZE;
+        for (int i = 0; i < n; i++)
+        {
+            SDL_Rect tile = getTile(startP.x, startP.y + i * TILE_SIZE);
+            SDL_RenderCopy(game->sdl_util.renderer, game->level_1_assets.surface, NULL, &tile);
+        }
+    }
+}
+
+void gameplay_tick(struct Game *game)
+{
+    struct TileRect *tiles = game->session.tiles;
+
+    for (int i = 0; i < 4; i++)
+    {
+        struct TileRect tile = tiles[i];
+        fillRectTiles(game, tile, tile.start);
     }
 }
 

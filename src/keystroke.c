@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include "constants.h"
 
-static handle_start_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
+static void handle_start_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
 {
     int curr_value = game->session.start_menu_selected_item;
     if (keycode == SDLK_UP)
@@ -16,7 +16,7 @@ static handle_start_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
     }
 }
 
-static handle_start_screen_enter_key(struct Game *game)
+static void handle_start_screen_enter_key(struct Game *game)
 {
     if (game->session.start_menu_selected_item == 0)
     {
@@ -24,11 +24,11 @@ static handle_start_screen_enter_key(struct Game *game)
     }
 }
 
-static handle_game_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
+static void handle_game_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
 {
 }
 
-static handle_finish_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
+static void handle_finish_screen_arrow_key(struct Game *game, SDL_KeyCode keycode)
 {
 }
 

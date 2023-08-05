@@ -15,7 +15,8 @@
             "intelliSenseMode": "gcc-x64",
             "macFrameworkPath": [
                 "/Library/Frameworks"
-            ]
+            ],
+            "compileCommands": "${workspaceFolder}/compile_commands.json"
         },
         {
             "name": "Windows",

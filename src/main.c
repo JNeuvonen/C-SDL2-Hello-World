@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
 
-    const char *PROJECT_NAME = "MINIGOLF THING";
+    const char *PROJECT_NAME = "SHITTY PACMAN!";
 
     SDL_Window *window = init_window(PROJECT_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_Renderer *renderer = init_renderer(window);
@@ -16,7 +16,6 @@ int main(int argc, char *argv[])
     struct Game *game = malloc(sizeof(struct Game));
     initialize_game(game, window, renderer);
     init_TTF(game);
-
     SDL_Texture *texture = IMG_LoadTexture(renderer, "assets/stonewall_grayscale.png");
 
     game_loop(game);
