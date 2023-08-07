@@ -26,25 +26,26 @@ int load_first_level(struct Game *game)
     return 1;
 };
 
+static void addTilesToLevel(struct TileRect *array, int tiles, bool horizontal, int startX, int startY, int idx)
+{
+    struct TileRect tileRect = get_tile_rect(tiles, horizontal);
+    tileRect.start = (struct Coords){startX, startY};
+    array[idx] = tileRect;
+};
+
 static struct TileRect *first_level_tiles()
 {
 
     const int ROWS = 100;
 
+    // Map boundaries
     struct TileRect *array = malloc(ROWS * sizeof(struct Coords *));
-    struct TileRect rectDim1 = get_tile_rect(1000, true);
-    rectDim1.start = (struct Coords){0, 0};
-    struct TileRect rectDim2 = get_tile_rect(1000, false);
-    rectDim2.start = (struct Coords){WINDOW_WIDTH - TILE_SIZE, 0};
-    struct TileRect rectDim3 = get_tile_rect(1000, true);
-    rectDim3.start = (struct Coords){0, WINDOW_HEIGHT - TILE_SIZE};
-    struct TileRect rectDim4 = get_tile_rect(1000, false);
-    rectDim4.start = (struct Coords){0, 0};
+    addTilesToLevel(array, 1000, true, 0, 0, 0);
+    addTilesToLevel(array, 1000, false, 0, 0, 1);
+    addTilesToLevel(array, 1000, false, WINDOW_WIDTH - TILE_SIZE, 0, 2);
+    addTilesToLevel(array, 1000, true, 0, WINDOW_HEIGHT - TILE_SIZE, 3);
 
-    array[0] = rectDim1;
-    array[1] = rectDim2;
-    array[2] = rectDim3;
-    array[3] = rectDim4;
+    // Level walls
 
     return array;
 }

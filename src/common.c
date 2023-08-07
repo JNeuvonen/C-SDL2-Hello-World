@@ -15,7 +15,7 @@ struct TileRect get_tile_rect(int length, bool horizontal)
     if (horizontal)
     {
 
-        ret.width = guardWindowSize(TILE_SIZE * 300, WINDOW_WIDTH);
+        ret.width = guardWindowSize(TILE_SIZE * length, WINDOW_WIDTH);
         ret.height = TILE_SIZE;
     }
     else
