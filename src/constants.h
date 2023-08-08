@@ -19,6 +19,9 @@ struct DynamicArray
 {
     int len;
     int *items;
+    int idx;
 };
+
+void addToArr(struct DynamicArray *arr, int new_item);
 
 #endif
