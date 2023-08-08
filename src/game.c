@@ -115,7 +115,7 @@ void gameplay_tick(struct Game *game)
 {
     struct TileRect *tiles = game->session.tiles;
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 4; i++)
     {
         struct TileRect tile = tiles[i];
         fillRectTiles(game, tile, tile.start);

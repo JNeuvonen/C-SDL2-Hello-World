@@ -40,12 +40,14 @@ static struct TileRect *first_level_tiles()
 
     // Map boundaries
     struct TileRect *array = malloc(ROWS * sizeof(struct Coords *));
-    addTilesToLevel(array, 1000, true, 0, 0, 0);
-    addTilesToLevel(array, 1000, false, 0, 0, 1);
-    addTilesToLevel(array, 1000, false, WINDOW_WIDTH - TILE_SIZE, 0, 2);
-    addTilesToLevel(array, 1000, true, 0, WINDOW_HEIGHT - TILE_SIZE, 3);
+    addTilesToLevel(array, 1000, true, 0, LEVEL_PADDING, 0);
+    addTilesToLevel(array, 1000, false, 0, LEVEL_PADDING, 1);
+    addTilesToLevel(array, 1000, false, WINDOW_WIDTH - TILE_SIZE, LEVEL_PADDING, 2);
+    addTilesToLevel(array, 1000, true, 0, WINDOW_HEIGHT - TILE_SIZE - LEVEL_PADDING, 3);
 
     // Level walls
+    addTilesToLevel(array, 10, true, 32, 32, 4);
+    addTilesToLevel(array, 10, false, 32 + 10 * TILE_SIZE, 32, 5);
 
     return array;
 }
