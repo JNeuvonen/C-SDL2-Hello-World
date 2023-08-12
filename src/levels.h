@@ -7,6 +7,6 @@
 
 int load_first_level(struct Game *game);
 
-struct TileRect *get_tiles(int level);
+struct TileRectVector *get_tiles(int level);
 
 #endif

@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include <SDL2/SDL.h>
+#include "constants.h"
 #include <SDL2_ttf/SDL_ttf.h>
 #include "common.h"
 #include <stdbool.h>
@@ -32,7 +33,7 @@ struct Session
     int curr_level;
     int start_menu_selected_item;
     enum StartMenuState menu_state;
-    struct TileRect *tiles;
+    struct TileRectVector *tiles;
 };
 
 struct SDL_util

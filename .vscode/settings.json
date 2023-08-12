@@ -6,6 +6,8 @@
     "new": "c",
     "common.h": "c",
     "constants.h": "c",
-    "game.h": "c"
+    "game.h": "c",
+    "__tuple": "c",
+    "array": "c"
   }
 }

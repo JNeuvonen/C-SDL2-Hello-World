@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "common.h"
 #include "levels.h"
 #include <SDL2_image/SDL_image.h>
@@ -26,37 +27,35 @@ int load_first_level(struct Game *game)
     return 1;
 };
 
-static void addTilesToLevel(struct TileRect *array, int tiles, bool horizontal, int startX, int startY, int idx)
+static void addTilesToLevel(struct TileRectVector *array, int tiles, bool horizontal, int startX, int startY, int idx)
 {
     struct TileRect tileRect = get_tile_rect(tiles, horizontal);
     tileRect.start = (struct Coords){startX, startY};
-    array[idx] = tileRect;
+    addToVec(array, tileRect);
 };
 
-static struct TileRect *first_level_tiles()
+static struct TileRectVector *first_level_tiles()
 {
 
-    const int ROWS = 100;
+    struct TileRectVector *tilesVector;
+    initTileVector(tilesVector);
 
     // Map boundaries
-    struct TileRect *array = malloc(ROWS * sizeof(struct Coords *));
-    addTilesToLevel(array, 1000, true, 0, LEVEL_PADDING, 0);
-    addTilesToLevel(array, 1000, false, 0, LEVEL_PADDING, 1);
-    addTilesToLevel(array, 1000, false, WINDOW_WIDTH - TILE_SIZE, LEVEL_PADDING, 2);
-    addTilesToLevel(array, 1000, true, 0, WINDOW_HEIGHT - TILE_SIZE - LEVEL_PADDING, 3);
+    addTilesToLevel(tilesVector, 1000, true, 0, LEVEL_PADDING, 0);
+    addTilesToLevel(tilesVector, 1000, false, 0, LEVEL_PADDING, 1);
+    addTilesToLevel(tilesVector, 1000, false, WINDOW_WIDTH - TILE_SIZE, LEVEL_PADDING, 2);
+    addTilesToLevel(tilesVector, 1000, true, 0, WINDOW_HEIGHT - TILE_SIZE - LEVEL_PADDING, 3);
 
     // Level walls
-    addTilesToLevel(array, 10, true, 32, 32, 4);
-    addTilesToLevel(array, 10, false, 32 + 10 * TILE_SIZE, 32, 5);
+    addTilesToLevel(tilesVector, 10, true, 150, 150, 4);
+    addTilesToLevel(tilesVector, 10, false, 150, 150, 5);
 
-    return array;
+    return tilesVector;
 }
 
-struct TileRect *get_tiles(int level)
+struct TileRectVector *get_tiles(int level)
 {
-
-    struct TileRect *tiles;
-
+    struct TileRectVector *tiles;
     switch (level)
     {
     case 1:

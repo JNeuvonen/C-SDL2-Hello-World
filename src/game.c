@@ -113,11 +113,11 @@ static void fillRectTiles(struct Game *game, struct TileRect tileRect, struct Co
 
 void gameplay_tick(struct Game *game)
 {
-    struct TileRect *tiles = game->session.tiles;
+    struct TileRectVector *tiles = game->session.tiles;
 
     for (int i = 0; i < 4; i++)
     {
-        struct TileRect tile = tiles[i];
+        struct TileRect tile = tiles->items[i];
         fillRectTiles(game, tile, tile.start);
     }
 }

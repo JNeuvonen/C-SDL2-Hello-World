@@ -1,15 +1,16 @@
 #include "constants.h"
+#include "game.h"
 
 const SDL_Color TITLE_COLOR = {156, 14, 38, 255};
 const SDL_Color HEADER_COLOR = {156, 14, 38, 255};
 
-void addToArr(struct DynamicArray *arr, int new_item)
+void addToVec(struct TileRectVector *arr, struct TileRect new_item)
 {
     if (arr->idx == arr->len)
     {
         arr->len *= 2;
 
-        int *new_arr = (int *)realloc(arr->items, arr->len * sizeof(int));
+        int *new_arr = (int *)realloc(arr->items, arr->len * sizeof(new_item));
         if (new_arr == NULL)
         {
             return;
@@ -19,4 +20,12 @@ void addToArr(struct DynamicArray *arr, int new_item)
 
     arr->items[arr->idx] = new_item;
     arr->idx++;
+}
+
+void initTileVector(struct TileRectVector *arr)
+{
+    int init_capacity = 100;
+    arr->len = 0;
+    arr->idx = 0;
+    arr->items = (struct TileRect *)malloc(init_capacity * sizeof(struct TileRect));
 }
