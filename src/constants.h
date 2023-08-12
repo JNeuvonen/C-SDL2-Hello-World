@@ -2,6 +2,7 @@
 #define CONSTANTS_H
 
 #include <SDL.h>
+#include "game.h"
 
 #define WINDOW_WIDTH 800
 #define LEVEL_PADDING 50
@@ -15,13 +16,15 @@
 extern const SDL_Color TITLE_COLOR;
 extern const SDL_Color HEADER_COLOR;
 
-struct DynamicArray
+struct TileRectVector
 {
     int len;
-    int *items;
+    struct TileRect *items;
     int idx;
 };
 
-void addToArr(struct DynamicArray *arr, int new_item);
+void addToVec(struct TileRectVector *arr, struct TileRect new_item);
+
+void initTileVector(struct TileRectVector *arr);
 
 #endif
